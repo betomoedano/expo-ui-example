@@ -1,14 +1,40 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, useColorScheme } from "react-native";
+import { useRouter } from "expo-router";
+import { Buttons } from "@/components/Buttons";
+import { Pickers } from "@/components/Pickers";
+import { Picker } from "@expo/ui/components/Picker";
+import { useState } from "react";
+import { ContextMenus } from "@/components/ContextMenus";
+import { Sections } from "@/components/Sections";
+/**
+ *
+ * Notes
+ *
+ * Loading state is not supported
+ * Disabled state is not supported
+ *
+ */
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+export default function Index() {
+  const colorScheme = useColorScheme();
+  const router = useRouter();
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-export default function TabOneScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+    <View style={[styles.container]}>
+      <Picker
+        options={["Buttons", "Picker", "Context Menu", "Section", "Checkbox"]}
+        selectedIndex={selectedIndex}
+        onOptionSelected={({ nativeEvent: { index } }) => {
+          setSelectedIndex(index);
+        }}
+        style={{ height: 50 }}
+      />
+      {selectedIndex === 0 && <Buttons />}
+      {selectedIndex === 1 && <Pickers />}
+      {selectedIndex === 2 && <ContextMenus />}
+      {selectedIndex === 3 && <Sections />}
+      {/* {selectedIndex === 4 && <Checkbox />} */}
     </View>
   );
 }
@@ -16,16 +42,16 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // padding: 16,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  text: {
+    color: "#000000",
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  darkText: {
+    color: "#ffffff",
+  },
+  debugBorder: {
+    borderWidth: 1,
+    borderColor: "red",
   },
 });
