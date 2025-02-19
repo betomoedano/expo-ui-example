@@ -29,7 +29,7 @@ export default function Index() {
           onOptionSelected={({ nativeEvent: { index } }) => {
             setSelectedIndex(index);
           }}
-          style={{ height: 50 }}
+          style={{ height: 50, width: "90%", alignSelf: "center" }}
         />
         {selectedIndex === 0 && <Buttons />}
         {selectedIndex === 1 && <Pickers />}
@@ -44,7 +44,6 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
   },
   text: {
     color: "#000000",

@@ -2,6 +2,8 @@ import { StyleSheet, Text, View, useColorScheme } from "react-native";
 import { Button } from "@expo/ui/components/Button";
 import { useState } from "react";
 import { useRouter } from "expo-router";
+import EditScreenInfo from "./EditScreenInfo";
+import { MonoText } from "./StyledText";
 
 const DEBUG_BORDERS = false; // Toggle this to show/hide debug borders
 
@@ -13,15 +15,9 @@ export function Buttons() {
   const [isStarred, setIsStarred] = useState(false);
   return (
     <View style={[styles.container, DEBUG_BORDERS && styles.debugBorder]}>
-      <Text
-        style={[
-          styles.text,
-          colorScheme === "dark" && styles.darkText,
-          DEBUG_BORDERS && styles.debugBorder,
-        ]}
-      >
+      <MonoText style={{ fontSize: 16, fontWeight: "bold", marginBottom: 16 }}>
         @expo/ui/components/Button
-      </Text>
+      </MonoText>
       <Button style={[{ width: "100%" }, DEBUG_BORDERS && styles.debugBorder]}>
         Default
       </Button>

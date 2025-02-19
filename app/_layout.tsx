@@ -59,8 +59,15 @@ function RootLayoutNav() {
         <Stack.Screen
           name="modal"
           options={{
+            headerShown: false,
             presentation: "formSheet",
             sheetAllowedDetents: [0.2, 0.4, 0.6, 0.8, 1],
+            sheetGrabberVisible: true,
+            sheetCornerRadius: 50,
+            sheetElevation: 10,
+            sheetInitialDetentIndex: 0,
+            sheetExpandsWhenScrolledToEdge: true,
+            // sheetLargestUndimmedDetentIndex: 0,
           }}
         />
       </Stack>
