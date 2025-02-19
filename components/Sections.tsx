@@ -4,78 +4,129 @@ import {
   Text,
   ScrollView,
   useColorScheme,
+  Platform,
 } from "react-native";
 import { Section } from "@expo/ui/components/Section";
 import { Picker } from "@expo/ui/components/Picker";
 import { Button } from "@expo/ui/components/Button";
 import { Switch } from "@expo/ui/components/Switch";
+import {
+  DateTimePicker,
+  DatePickerProps,
+} from "@expo/ui/components/DatePicker";
+import { ColorPicker } from "@expo/ui/components/ColorPicker";
+import { Slider } from "@expo/ui/components/Slider";
 import { useState } from "react";
 
 export function Sections() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [color, setColor] = useState<string | null>("blue");
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [sliderValue, setSliderValue] = useState(0.5);
   const [switchValue, setSwitchValue] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const colorScheme = useColorScheme();
+
+  const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
+  const displayOptions =
+    Platform.OS === "ios"
+      ? ["compact", "graphical", "wheel"]
+      : ["picker", "input"];
+  const [displayIndex, setDisplayIndex] = useState(0);
 
   return (
     <ScrollView style={styles.container}>
-      {/* Basic Section */}
-      <Section title="Basic Section">
+      <Section title="Form Controls Demo">
         <Text style={[styles.text, colorScheme === "dark" && styles.darkText]}>
-          This is a basic section with some text content
+          Explore these form controls!
         </Text>
-      </Section>
 
-      {/* Section with Form Elements */}
-      <Section title="Form Section">
-        <Picker
-          options={["Option 1", "Option 2", "Option 3"]}
-          variant="menu"
-          selectedIndex={selectedIndex}
-          onOptionSelected={({ nativeEvent: { index } }) =>
-            setSelectedIndex(index)
-          }
-          style={styles.picker}
-          label="Select an option"
-        />
+        <Button
+          onPress={() => console.log("Button pressed")}
+          style={styles.control}
+        >
+          Click Me!
+        </Button>
+
         <Switch
           value={switchValue}
           onValueChange={setSwitchValue}
-          style={styles.switch}
-          label="Enable feature"
+          style={styles.control}
+          label="Toggle this feature"
+        />
+
+        <ColorPicker
+          label="Choose your color"
+          selection={color}
+          supportsOpacity
+          onValueChanged={setColor}
+          style={styles.control}
+        />
+
+        <Picker
+          label="Select an option"
+          options={options}
+          selectedIndex={selectedIndex}
+          onOptionSelected={({ nativeEvent: { index } }) => {
+            setSelectedIndex(index);
+          }}
+          variant="menu"
+          style={styles.control}
+        />
+
+        <Slider
+          value={sliderValue}
+          onValueChange={setSliderValue}
+          style={styles.control}
+        />
+
+        <DateTimePicker
+          onDateSelected={setSelectedDate}
+          displayedComponents="dateAndTime"
+          initialDate={selectedDate.toISOString()}
+          iosVariant={
+            displayOptions[displayIndex] as DatePickerProps["iosVariant"]
+          }
+          androidVariant={
+            displayOptions[displayIndex] as DatePickerProps["androidVariant"]
+          }
+          style={[
+            styles.control,
+            { height: Platform.select({ android: 520, ios: 100 }) },
+          ]}
+          showVariantToggle
+          is24Hour
+        />
+
+        <View
+          style={{
+            width: 100,
+            height: 100,
+            backgroundColor: "red",
+          }}
+        >
+          <Text>{Platform.OS}</Text>
+        </View>
+      </Section>
+      <Section title="Network & Connectivity">
+        <Switch
+          style={styles.control}
+          label="VPN Enabled"
+          value={false}
+          onValueChange={() => {}}
+        />
+        <Switch
+          style={styles.control}
+          label="Bluetooth Enabled"
+          value={false}
+          onValueChange={() => {}}
         />
       </Section>
-
-      {/* Section with Button */}
-      <Section title="Action Section">
-        <Button
-          onPress={() => console.log("Button pressed")}
-          style={styles.button}
-        >
-          Take Action
-        </Button>
-      </Section>
-
-      {/* Section with Footer */}
-      <Section
-        title="Section with Footer"
-        footer="Additional information can be displayed here in the footer"
-      >
+      <Section title="Device Information">
         <Text style={[styles.text, colorScheme === "dark" && styles.darkText]}>
-          This section includes a footer with extra information
+          Explore these form controls!
         </Text>
-      </Section>
-
-      {/* Section with Custom Background */}
-      <Section title="Custom Background" style={styles.customSection}>
         <Text style={[styles.text, colorScheme === "dark" && styles.darkText]}>
-          This section has a custom background color
-        </Text>
-      </Section>
-
-      {/* Inset Section */}
-      <Section title="Inset Section" inset>
-        <Text style={[styles.text, colorScheme === "dark" && styles.darkText]}>
-          This section uses the inset property for a different appearance
+          {Platform.OS}
         </Text>
       </Section>
     </ScrollView>
@@ -85,27 +136,19 @@ export function Sections() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // padding: 16,
   },
   text: {
-    fontSize: 16,
+    fontSize: 17,
     color: "#000000",
-    marginVertical: 8,
+    marginBottom: 16,
   },
   darkText: {
     color: "#ffffff",
   },
-  picker: {
-    height: 50,
+  control: {
     marginVertical: 8,
-  },
-  switch: {
-    marginVertical: 8,
-  },
-  button: {
-    marginVertical: 8,
-  },
-  customSection: {
-    backgroundColor: "rgba(255, 165, 0, 0.1)", // Light orange background
+    height: 100,
+    borderColor: "red",
+    borderWidth: 1,
   },
 });
